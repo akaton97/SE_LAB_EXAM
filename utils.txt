@@ -1,0 +1,53 @@
+JMS:
+Client (2): Main + Listener
+JMSServer (2): Main + Productor
+
+--------------------------------
+
+SOAP:
+Client (1): Main
+Server (4+): Main + classes + WSImpl + WSInterface
+
+--------------------------------
+
+DB:
+DBMain (1): Main
+
+--------------------------------
+
+Flight JMS
+In FlightProductor.java (JMSServer) tramite la setStringProperty associo alla stringa "flight" il valore id.
+Tale campo potrà essere ottenuto nel FlightListener.java (Client) attraverso la funzione getStringProperty("flight")
+
+--------------------------------
+
+Professor JMS
+In SOAP ho WSInterface dove definisco la funzione getDetails(String id) e WSImpl dove implemento la funzione precedentemente definita.
+
+--------------------------------
+
+appunto legato a Professor JMS: 
+    private String getId() {
+        return Integer.toString(randomGen.nextInt(7));  // only 7 professors in the map
+    }
+poichè vogliamo che l'id sia una stringa, generiamo un intero randomico tra 0 (compreso) e 7 (non compreso) e poi lo trasformiamo in stringa tramite la toString -> Integer.toString(randomGen.nextInt(7));
+
+--------------------------------
+
+appunto random:
+Le mappe in SOAP vengono passate con gli adapter e gli implementator.
+esempio Director:
+l'interfaccia viene definita nel Director.java (dichiarazione funzioni usate nel implementator)
+l'implementazione viene definita nel DirectorImpl.java (costruttore + get + set + toString)
+marsahl e unmarshal vengono definite nel adapter DirectorAdapter.java
+
+--------------------------------
+
+appunto random:
+.put(key, value) -> si usa per le mappe
+.add(element) -> si usa per le liste (array)
+
+---------------------------------------
+
+DATABASE  
+quando passo il path al database meglio passarlo tra virgloette " "

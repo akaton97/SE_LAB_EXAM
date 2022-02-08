@@ -1,0 +1,117 @@
+Connection to Db
+
+import java.sql.Connection; (Connection comes from java.sql !!)
+
+private Connection connection;
+
+Class.forName("org.sqlite.JDBC");
+connection = DriverManager.getConnection("jdbc:sqlite:/home/studente/DBName");
+
+CASE 1: Query is not fixed
+
+PreparedStatement statement = connection.prepareStatement("INSERT INTO table VALUES(?, ?)");
+statement.setQueryTimeout(30);        
+statement.setString(1, attr1);
+statement.setString(2, attr2);
+statement.executeUpdate();
+
+CASE 2: Query is fixed
+
+Statement stat = conn.createStatement();
+stat.executeUpdate("create table tableName (attr1, attr2);");
+
+
+To create the database:
+
+Statement statement = connection.createStatement();
+statement.executeUpdate("drop table if exists nameTable;");
+statement.executeUpdate("create table nameTable (attr1, attr2, attr3);");
+
+
+To insert values in the database:
+
+PreparedStatement statement = connection.prepareStatement("INSERT INTO tableName VALUES(?, ?, ?)");
+            
+statement.setString(1, value1);
+statement.setString(2, value2);
+statement.setString(3, value3);
+statement.addBatch();
+connection.setAutoCommit(false);
+statement.executeBatch();
+connection.setAutoCommit(true);
+
+
+
+To retrieve result of a query:
+
+Statement statement = connection.createStatement();
+ResultSet result = statement.executeQuery("select * from tableName");
+while (result.next()) 
+{
+  System.out.print("Object = " + result.getString("attr1") + " " + result.getString("attr2") + " " +  result.getString("attr3") + "\n");
+}
+result.close();
+
+
+**********************************************
+
+Create jar file from code
+
+Clean and build the project
+
+Go to NetBeansProjects folder
+Open the project folder
+Open the target folder
+Take the jar
+
+**********************************************
+
+General 
+
+The plugin maven shade is NECESSARY, otherwise the jar file won't execute!!!!
+<build> <plugins> <plugin> ... </plugin> </plugins> </build>
+
+To Run Jar file:
+java -cp nameFile pathMainClass
+
+**********************************************
+
+Json
+
+Json = Restful + jackson library (extended with a database)
+
+When the client change one value, the value changes on both database and html on browser
+clients acts on database(?) and then server read values from database converting its format to json?
+
+Before of public class insert
+@JacksonXmlRootElement(localName = "Fligth")
+
+Get
+Put (Update value of the object)
+Post (Insert a new object)
+Delete
+
+Class flight of client is perfectly the same of class flight of server
+
+
+**********************************************
+
+Restful
+
+When creating the client we need to create as many classes as the number of elements.
+For example Student and Course.
+
+Before public class Course { --- } 
+@XmlRootElement(name = "Course")
+Same in other classes
+
+In order to create students from client we need to create xml resources
+src -> main -> resources -> newStudent.xml 
+(Create new folder in the project and call it resources)
+It will be located under "Other sources"
+
+For the server the class Student is simple (just classic methods) 
+and it s equal to the student class of client
+
+The class course it's similar but in addition it has post, get, delete methods because
+inside a course there are students.
